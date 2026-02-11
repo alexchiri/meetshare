@@ -1,0 +1,121 @@
+.container {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+
+.container:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.dragOver {
+  border-color: var(--color-accent);
+  border-style: dashed;
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+
+.form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px 14px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input:focus {
+  border-color: transparent;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.sendBtn, .fileBtn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+
+.sendBtn {
+  background: var(--gradient-warm);
+  color: white;
+}
+
+.sendBtn:hover:not(:disabled) {
+  box-shadow: 0 2px 12px rgba(242, 93, 56, 0.3);
+}
+
+.sendBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.fileBtn {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.fileBtn:hover:not(:disabled) {
+  background: var(--color-border);
+}
+
+.hidden {
+  display: none;
+}
+
+.dropOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent-light);
+  border-radius: var(--radius-lg);
+  color: var(--color-accent);
+  font-weight: 700;
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .container {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .form {
+    padding: 10px 16px;
+    gap: 6px;
+  }
+
+  .sendBtn, .fileBtn {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+
+  .input {
+    min-width: 0;
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+}

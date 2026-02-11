@@ -1,0 +1,148 @@
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  transition: box-shadow 0.15s;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 600px) {
+  .card {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--color-border);
+    padding: 12px 16px;
+  }
+
+  .card:hover {
+    box-shadow: none;
+  }
+
+  .meta {
+    margin-bottom: 6px;
+  }
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.badge {
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--color-surface-hover);
+  color: var(--color-text-muted);
+}
+
+.linkBadge {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.imageBadge {
+  background: var(--color-teal-light);
+  color: var(--color-teal);
+}
+
+.fileBadge {
+  background: var(--color-warning-light);
+  color: var(--color-warning);
+}
+
+.purgedBadge {
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(229, 72, 77, 0.1);
+  color: var(--color-danger);
+}
+
+.time {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  margin-left: auto;
+}
+
+.text {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.6;
+}
+
+.link {
+  color: var(--color-accent);
+  word-break: break-all;
+  font-size: 0.95rem;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.image {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+}
+
+.fileCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.fileInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.fileName {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.size {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.downloadBtn {
+  padding: 7px 18px;
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.downloadBtn:hover:not(:disabled) {
+  background: var(--color-border);
+  border-color: var(--color-text-muted);
+}
+
+.downloadBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,72 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-bg: #faf8f5;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f5f2ee;
+  --color-border: #e8e2da;
+  --color-text: #2d2a26;
+  --color-text-muted: #8a8480;
+  --color-primary: #f25d38;
+  --color-primary-hover: #e04820;
+  --color-primary-light: rgba(242, 93, 56, 0.1);
+  --color-accent: #7c5bf5;
+  --color-accent-light: rgba(124, 91, 245, 0.1);
+  --color-teal: #1ab69d;
+  --color-teal-light: rgba(26, 182, 157, 0.1);
+  --color-danger: #e5484d;
+  --color-success: #30a46c;
+  --color-warning: #f5a623;
+  --color-warning-light: rgba(245, 166, 35, 0.1);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --gradient-warm: linear-gradient(135deg, #f25d38 0%, #f5a623 100%);
+  --gradient-cool: linear-gradient(135deg, #7c5bf5 0%, #1ab69d 100%);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input, textarea {
+  font-family: inherit;
+}

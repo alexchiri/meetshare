@@ -1,0 +1,42 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - HOST=0.0.0.0
+      - BASE_URL=https://meetshare.app
+      - DB_PATH=/data/share-it.db
+      - UPLOAD_DIR=/uploads
+      - TURN_SERVER=turns:turn.meetshare.app:443
+      - TURN_USERNAME=${TURN_USERNAME}
+      - TURN_CREDENTIAL=${TURN_CREDENTIAL}
+    volumes:
+      - share-it-data:/data
+      - share-it-uploads:/uploads
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  coturn:
+    image: coturn/coturn:latest
+    ports:
+      - "3478:3478/tcp"
+    command: >
+      -n --lt-cred-mech --realm=shareit
+      --user=${TURN_USERNAME}:${TURN_CREDENTIAL}
+      --fingerprint
+      --no-tls --no-dtls
+      --no-udp --no-udp-relay
+      --listening-port=3478
+      --log-file=stdout
+    restart: unless-stopped
+
+volumes:
+  share-it-data:
+  share-it-uploads:
