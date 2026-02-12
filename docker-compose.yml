@@ -1,6 +1,6 @@
 services:
   app:
-    build: .
+    image: ghcr.io/alexchiri/meetshare:latest
     ports:
       - "3001:3001"
     environment:
