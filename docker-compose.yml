@@ -28,7 +28,7 @@ services:
     env_file:
       - .env.meetshare
     ports:
-      - "3478:3478/tcp"
+      - "127.0.0.1:3478:3478/tcp"
     entrypoint: /bin/sh
     command:
       - -c
