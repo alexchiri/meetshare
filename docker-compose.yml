@@ -41,6 +41,7 @@ services:
         --no-udp
         --listening-port=3478
         --min-port=49152 --max-port=49252
+        --external-ip=77.42.78.121
         --log-file=stdout
     restart: unless-stopped
 
