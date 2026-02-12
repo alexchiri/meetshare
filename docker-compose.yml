@@ -1,6 +1,8 @@
 services:
   app:
     image: ghcr.io/alexchiri/meetshare:latest
+    env_file:
+      - .env.meetshare
     ports:
       - "3001:3001"
     environment:
@@ -25,6 +27,8 @@ services:
 
   coturn:
     image: coturn/coturn:latest
+    env_file:
+      - .env.meetshare
     ports:
       - "3478:3478/tcp"
     command: >
