@@ -11,6 +11,9 @@ import contentRouter from './routes/content.js';
 const app = express();
 
 const isProduction = process.env.NODE_ENV === 'production';
+if (isProduction) {
+  app.set('trust proxy', 1);
+}
 app.use(cors({ origin: isProduction ? true : config.clientUrl }));
 app.use(express.json());
 app.use(generalLimiter);
