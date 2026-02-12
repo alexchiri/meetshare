@@ -13,8 +13,6 @@ services:
       - DB_PATH=/data/share-it.db
       - UPLOAD_DIR=/uploads
       - TURN_SERVER=turns:turn.meetshare.app:443
-      - TURN_USERNAME=${TURN_USERNAME}
-      - TURN_CREDENTIAL=${TURN_CREDENTIAL}
     volumes:
       - share-it-data:/data
       - share-it-uploads:/uploads
@@ -31,14 +29,17 @@ services:
       - .env.meetshare
     ports:
       - "3478:3478/tcp"
-    command: >
-      -n --lt-cred-mech --realm=shareit
-      --user=${TURN_USERNAME}:${TURN_CREDENTIAL}
-      --fingerprint
-      --no-tls --no-dtls
-      --no-udp --no-udp-relay
-      --listening-port=3478
-      --log-file=stdout
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - >
+        turnserver -n --lt-cred-mech --realm=shareit
+        --user=$$TURN_USERNAME:$$TURN_CREDENTIAL
+        --fingerprint
+        --no-tls --no-dtls
+        --no-udp --no-udp-relay
+        --listening-port=3478
+        --log-file=stdout
     restart: unless-stopped
 
 volumes:
