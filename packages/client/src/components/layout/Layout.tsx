@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <header className={styles.header}>
         <Link to="/" className={styles.logoLink}>
           <Logo size={32} />
-          <span className={styles.logoText}>MeetShare</span>
+          <span className={styles.logoText}>MeetShare<span className={styles.logoApp}>.app</span></span>
         </Link>
       </header>
       <main className={styles.main}>{children}</main>

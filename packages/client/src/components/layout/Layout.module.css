@@ -29,6 +29,15 @@
   letter-spacing: -0.02em;
 }
 
+.logoApp {
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #f25d38, #f5a623);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .main {
   flex: 1;
   padding: 24px;
