@@ -25,3 +25,9 @@ export function checkDiskSafetyValve(): boolean {
   }
   return false;
 }
+
+export function isDiskFull(): boolean {
+  const maxBytes = config.maxUploadDirGb * 1024 * 1024 * 1024;
+  const currentBytes = getUploadDirSizeBytes();
+  return currentBytes >= maxBytes;
+}

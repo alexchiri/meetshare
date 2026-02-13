@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createRoom } from '../../services/api';
 import { showToast } from '../common/Toaster';
@@ -8,6 +8,14 @@ import styles from './HomePage.module.css';
 export default function HomePage() {
   const [creating, setCreating] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Enter') handleCreate();
+    }
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  });
 
   async function handleCreate() {
     if (creating) return;

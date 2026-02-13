@@ -9,7 +9,7 @@ import {
 } from '../db/repositories/content.js';
 import { getRoom, touchRoom } from '../db/repositories/rooms.js';
 import { computeFileHash } from '../storage/disk.js';
-import { checkDiskSafetyValve } from '../storage/cleanup.js';
+import { checkDiskSafetyValve, isDiskFull } from '../storage/cleanup.js';
 import { isImage } from '../utils/mime.js';
 import { upload } from '../middleware/upload.js';
 import { uploadLimiter } from '../middleware/rateLimit.js';
@@ -41,6 +41,12 @@ router.post('/api/rooms/:roomId/content', uploadLimiter, (req, res, next) => {
   // Check if it's a multipart upload
   const contentType = req.headers['content-type'] || '';
   if (contentType.includes('multipart/form-data')) {
+    // Reject early if disk is at capacity
+    if (isDiskFull()) {
+      res.status(507).json({ error: 'Storage full — please try again later' });
+      return;
+    }
+
     // Handle file upload
     upload.single('file')(req, res, (err) => {
       if (err) {
