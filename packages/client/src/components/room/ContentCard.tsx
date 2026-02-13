@@ -1,8 +1,23 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { ContentItem } from '@share-it/shared';
 import { getFileUrl } from '../../services/api';
 import { showToast } from '../common/Toaster';
 import styles from './ContentCard.module.css';
+
+const URL_RE = /(https?:\/\/[^\s<]+)/g;
+
+function linkify(text: string): ReactNode[] {
+  const parts = text.split(URL_RE);
+  return parts.map((part, i) =>
+    URL_RE.test(part) ? (
+      <a key={i} href={part} target="_blank" rel="noopener noreferrer" className={styles.link}>
+        {part}
+      </a>
+    ) : (
+      part
+    ),
+  );
+}
 
 interface Props {
   item: ContentItem;
@@ -48,7 +63,7 @@ export default function ContentCard({ item, roomId }: Props) {
           <span className={styles.badge}>Text</span>
           <span className={styles.time}>{formatTime(item.createdAt)}</span>
         </div>
-        <p className={styles.text}>{item.textContent}</p>
+        <p className={styles.text}>{linkify(item.textContent || '')}</p>
       </div>
     );
   }
