@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
 import * as api from '../services/api';
-import { cacheContentMeta, cacheContentBlob, evictLRU } from '../services/idb';
 
 interface UploadState {
   uploading: boolean;
@@ -22,12 +21,6 @@ export function useFileUpload(roomId: string) {
         const item = await api.uploadFile(roomId, file, (pct) => {
           setState((s) => ({ ...s, progress: pct }));
         });
-
-        // Cache to IndexedDB
-        const blob = await file.arrayBuffer();
-        await cacheContentMeta(item);
-        await cacheContentBlob(item.id, blob);
-        await evictLRU();
 
         setState({ uploading: false, progress: 100, error: null });
         return item;

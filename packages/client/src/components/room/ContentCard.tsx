@@ -1,20 +1,16 @@
 import { useState } from 'react';
 import type { ContentItem } from '@share-it/shared';
-import type { P2PTransferService } from '../../services/p2p-transfer';
 import { getFileUrl } from '../../services/api';
-import { getCachedBlob } from '../../services/idb';
 import { showToast } from '../common/Toaster';
 import styles from './ContentCard.module.css';
 
 interface Props {
   item: ContentItem;
   roomId: string;
-  p2pRef: React.RefObject<P2PTransferService | null>;
 }
 
-export default function ContentCard({ item, roomId, p2pRef }: Props) {
+export default function ContentCard({ item, roomId }: Props) {
   const [downloading, setDownloading] = useState(false);
-  const [p2pProgress, setP2pProgress] = useState<number | null>(null);
   const isPurged = item.purgedAt != null;
 
   function formatSize(bytes?: number): string {
@@ -33,49 +29,16 @@ export default function ContentCard({ item, roomId, p2pRef }: Props) {
     setDownloading(true);
 
     try {
-      // Try local cache first
-      const cached = await getCachedBlob(item.id);
-      if (cached) {
-        downloadBlob(cached, item.fileName || 'download');
-        return;
-      }
-
       if (!isPurged) {
-        // Download from server
         window.open(getFileUrl(roomId, item.id), '_blank');
       } else {
-        // Try P2P
-        if (p2pRef.current && item.fileHash) {
-          const blob = await p2pRef.current.requestFile(
-            item.id,
-            item.fileHash,
-            (pct) => setP2pProgress(pct),
-          );
-          if (blob) {
-            downloadBlob(blob, item.fileName || 'download');
-          } else {
-            showToast('No peers have this file available', 'error');
-          }
-        } else {
-          showToast('File purged — no peers available', 'error');
-        }
+        showToast('File no longer available', 'error');
       }
     } catch {
       showToast('Download failed', 'error');
     } finally {
       setDownloading(false);
-      setP2pProgress(null);
     }
-  }
-
-  function downloadBlob(buffer: ArrayBuffer, filename: string) {
-    const blob = new Blob([buffer]);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
   }
 
   if (item.type === 'text') {
@@ -137,7 +100,7 @@ export default function ContentCard({ item, roomId, p2pRef }: Props) {
         <span className={`${styles.badge} ${styles.fileBadge}`}>
           {item.type === 'image' ? 'Image' : 'File'}
         </span>
-        {isPurged && <span className={styles.purgedBadge}>Server purged</span>}
+        {isPurged && <span className={styles.purgedBadge}>Expired</span>}
         <span className={styles.time}>{formatTime(item.createdAt)}</span>
       </div>
       <div className={styles.fileCard}>
@@ -148,15 +111,13 @@ export default function ContentCard({ item, roomId, p2pRef }: Props) {
         <button
           className={styles.downloadBtn}
           onClick={handleDownload}
-          disabled={downloading}
+          disabled={downloading || isPurged}
         >
-          {p2pProgress !== null
-            ? `${p2pProgress}%`
-            : downloading
-              ? 'Downloading...'
-              : isPurged
-                ? 'Get from Peers'
-                : 'Download'}
+          {downloading
+            ? 'Downloading...'
+            : isPurged
+              ? 'Unavailable'
+              : 'Download'}
         </button>
       </div>
     </div>

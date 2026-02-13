@@ -12,7 +12,6 @@ services:
       - BASE_URL=https://meetshare.app
       - DB_PATH=/data/share-it.db
       - UPLOAD_DIR=/uploads
-      - TURN_SERVER=turns:turns.meetshare.app:443
     volumes:
       - share-it-data:/data
       - share-it-uploads:/uploads
@@ -21,28 +20,6 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-    restart: unless-stopped
-
-  coturn:
-    image: coturn/coturn:latest
-    env_file:
-      - .env.meetshare
-    ports:
-      - "127.0.0.1:3478:3478/tcp"
-      - "49152-49252:49152-49252/udp"
-    entrypoint: /bin/sh
-    command:
-      - -c
-      - >
-        turnserver -n --lt-cred-mech --realm=shareit
-        --user=$$TURN_USERNAME:$$TURN_CREDENTIAL
-        --fingerprint
-        --no-tls --no-dtls
-        --no-udp
-        --listening-port=3478
-        --min-port=49152 --max-port=49252
-        --external-ip=77.42.78.121
-        --log-file=stdout
     restart: unless-stopped
 
 volumes:

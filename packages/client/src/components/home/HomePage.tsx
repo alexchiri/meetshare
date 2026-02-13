@@ -59,14 +59,12 @@ export default function HomePage() {
         <div className={styles.feature}>
           <div className={`${styles.featureIcon} ${styles.iconP2p}`}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="6" cy="6" r="3" />
-              <circle cx="18" cy="18" r="3" />
-              <path d="M6 21V9a9 9 0 0 0 9 9" />
-              <path d="M18 3v12a9 9 0 0 0-9-9" />
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
             </svg>
           </div>
-          <h3>Peer-to-Peer</h3>
-          <p>Files transfer directly between browsers. Works even after server cleanup.</p>
+          <h3>Auto-cleanup</h3>
+          <p>Files auto-delete after 24 hours for privacy. No lingering data.</p>
         </div>
         <div className={styles.feature}>
           <div className={`${styles.featureIcon} ${styles.iconZap}`}>

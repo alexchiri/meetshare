@@ -1,14 +1,9 @@
-export const CHUNK_SIZE = 16 * 1024; // 16 KiB
-export const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100 MB
-export const PURGE_DAYS = 7;
+export const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
+export const PURGE_DAYS = 1;
 export const CONTENT_PAGE_SIZE = 50;
 export const WS_HEARTBEAT_INTERVAL = 30_000; // 30s
 export const WS_HEARTBEAT_TIMEOUT = 10_000; // 10s
 export const WS_RECONNECT_BASE_DELAY = 1_000;
 export const WS_RECONNECT_MAX_DELAY = 30_000;
-export const BACKPRESSURE_HIGH = 1024 * 1024; // 1 MB
-export const BACKPRESSURE_LOW = 256 * 1024; // 256 KB
-export const STORAGE_BUDGET = 500 * 1024 * 1024; // 500 MB
-export const MAX_MESH_PEERS = 8;
 export const ROOM_ID_LENGTH = 10;
 export const CONTENT_ID_LENGTH = 16;

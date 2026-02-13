@@ -19,14 +19,6 @@ export interface ContentItem {
   purgedAt?: string | null;
 }
 
-export interface ManifestEntry {
-  contentId: string;
-  fileHash: string;
-  fileSize: number;
-  fileName: string;
-  mimeType: string;
-}
-
 export interface PeerInfo {
   peerId: string;
   joinedAt: string;

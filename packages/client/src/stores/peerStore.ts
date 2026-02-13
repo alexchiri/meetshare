@@ -3,7 +3,6 @@ import { create } from 'zustand';
 interface PeerInfo {
   peerId: string;
   joinedAt: string;
-  connected: boolean; // WebRTC connected
 }
 
 interface PeerState {
@@ -13,7 +12,6 @@ interface PeerState {
   setLocalPeerId: (id: string) => void;
   addPeer: (peerId: string, joinedAt: string) => void;
   removePeer: (peerId: string) => void;
-  setPeerConnected: (peerId: string, connected: boolean) => void;
   reset: () => void;
 }
 
@@ -26,7 +24,7 @@ export const usePeerStore = create<PeerState>((set) => ({
   addPeer: (peerId, joinedAt) =>
     set((state) => {
       const peers = new Map(state.peers);
-      peers.set(peerId, { peerId, joinedAt, connected: false });
+      peers.set(peerId, { peerId, joinedAt });
       return { peers };
     }),
 
@@ -34,16 +32,6 @@ export const usePeerStore = create<PeerState>((set) => ({
     set((state) => {
       const peers = new Map(state.peers);
       peers.delete(peerId);
-      return { peers };
-    }),
-
-  setPeerConnected: (peerId, connected) =>
-    set((state) => {
-      const peers = new Map(state.peers);
-      const peer = peers.get(peerId);
-      if (peer) {
-        peers.set(peerId, { ...peer, connected });
-      }
       return { peers };
     }),
 

@@ -43,10 +43,6 @@ export function getPeerCount(roomId: string): number {
   return rooms.get(roomId)?.size ?? 0;
 }
 
-export function getPeerConnection(roomId: string, peerId: string): PeerConnection | undefined {
-  return rooms.get(roomId)?.get(peerId);
-}
-
 export function broadcastToRoom(roomId: string, message: object, excludePeerId?: string): void {
   const peers = getPeersInRoom(roomId);
   const data = JSON.stringify(message);

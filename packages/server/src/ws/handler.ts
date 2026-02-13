@@ -8,9 +8,7 @@ import {
   removePeerFromRoom,
   getPeersInRoom,
   broadcastToRoom,
-  getPeerConnection,
 } from './rooms.js';
-import { config } from '../config.js';
 
 export function handleWsConnection(ws: WebSocket, req: IncomingMessage): void {
   const url = new URL(req.url || '', `http://${req.headers.host}`);
@@ -38,24 +36,11 @@ export function handleWsConnection(ws: WebSocket, req: IncomingMessage): void {
   // Add peer to room
   const conn = addPeerToRoom(roomId, peerId, ws);
 
-  // Build ICE servers config
-  const iceServers: Array<{ urls: string | string[]; username?: string; credential?: string }> = [
-    { urls: ['stun:stun.l.google.com:19302'] },
-  ];
-  if (config.turnServer) {
-    iceServers.push({
-      urls: config.turnServer,
-      username: config.turnUsername,
-      credential: config.turnCredential,
-    });
-  }
-
   // Send welcome
   ws.send(JSON.stringify({
     type: WsMessageType.Welcome,
     peerId,
     peers: existingPeers,
-    iceServers,
   }));
 
   // Broadcast join to others
@@ -69,7 +54,7 @@ export function handleWsConnection(ws: WebSocket, req: IncomingMessage): void {
   ws.on('message', (data) => {
     try {
       const msg = JSON.parse(data.toString());
-      handleMessage(roomId, peerId, msg, ws);
+      handleMessage(msg, ws);
     } catch {
       // Ignore malformed messages
     }
@@ -91,31 +76,10 @@ export function handleWsConnection(ws: WebSocket, req: IncomingMessage): void {
   (ws as any).__alive = true;
 }
 
-function handleMessage(roomId: string, fromPeerId: string, msg: any, _ws: WebSocket): void {
+function handleMessage(msg: any, ws: WebSocket): void {
   switch (msg.type) {
     case WsMessageType.Ping:
-      _ws.send(JSON.stringify({ type: WsMessageType.Pong }));
-      break;
-
-    case WsMessageType.SignalOffer:
-    case WsMessageType.SignalAnswer:
-    case WsMessageType.SignalIce: {
-      const target = getPeerConnection(roomId, msg.to);
-      if (target && target.ws.readyState === 1) {
-        target.ws.send(JSON.stringify({
-          ...msg,
-          from: fromPeerId,
-        }));
-      }
-      break;
-    }
-
-    case WsMessageType.ManifestAnnounce:
-      broadcastToRoom(roomId, {
-        type: WsMessageType.ManifestUpdate,
-        peerId: fromPeerId,
-        manifest: msg.manifest,
-      }, fromPeerId);
+      ws.send(JSON.stringify({ type: WsMessageType.Pong }));
       break;
   }
 }
