@@ -29,7 +29,7 @@ export default function HomePage() {
         <div className={styles.logoWrap}>
           <Logo size={72} />
         </div>
-        <h1 className={styles.title}>MeetShare</h1>
+        <h1 className={styles.title}>MeetShare<span className={styles.titleApp}>.app</span></h1>
         <p className={styles.subtitle}>
           Instantly share links, text, and files with everyone in the room. No sign-up required.
         </p>
