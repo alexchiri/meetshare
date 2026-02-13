@@ -23,7 +23,7 @@ export default function HomePage() {
     setCreating(true);
     try {
       const room = await createRoom();
-      navigate(`/room/${room.id}`);
+      navigate(`/room/${room.id}`, { state: { created: true } });
     } catch (err) {
       showToast('Failed to create room', 'error');
     } finally {

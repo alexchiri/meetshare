@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { useRoom } from '../../hooks/useRoom';
 import { useWebSocket } from '../../hooks/useWebSocket';
 import RoomHeader from './RoomHeader';
@@ -12,7 +12,8 @@ export default function RoomPage() {
   const { roomId = '' } = useParams<{ roomId: string }>();
   const { room, content, loading, error } = useRoom(roomId);
   useWebSocket(roomId);
-  const [showQR, setShowQR] = useState(false);
+  const location = useLocation();
+  const [showQR, setShowQR] = useState(!!(location.state as any)?.created);
 
   if (!roomId) return <div>Invalid room</div>;
 
