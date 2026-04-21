@@ -48,7 +48,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 56px;
+  margin-bottom: 14px;
   padding: 16px 36px;
   font-size: 1.05rem;
   font-weight: 700;
@@ -58,6 +58,22 @@
   border-radius: var(--radius-full);
   box-shadow: 0 4px 20px rgba(242, 93, 56, 0.35);
   transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.joinLink {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: 56px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.joinLink:hover {
+  color: var(--color-text);
+  background: var(--color-surface-hover);
 }
 
 .button:hover:not(:disabled) {

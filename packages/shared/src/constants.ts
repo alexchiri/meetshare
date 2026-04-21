@@ -7,3 +7,7 @@ export const WS_RECONNECT_BASE_DELAY = 1_000;
 export const WS_RECONNECT_MAX_DELAY = 30_000;
 export const ROOM_ID_LENGTH = 10;
 export const CONTENT_ID_LENGTH = 16;
+export const PAIRING_CODE_LENGTH = 6;
+// Excludes visually ambiguous characters (0, O, 1, I, L).
+export const PAIRING_CODE_ALPHABET = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
+export const PAIRING_CODE_TTL_MS = 5 * 60 * 1000;

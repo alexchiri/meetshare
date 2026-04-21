@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createRoom } from '../../services/api';
 import { showToast } from '../common/Toaster';
 import Logo from '../common/Logo';
@@ -47,6 +47,10 @@ export default function HomePage() {
         <span className={styles.buttonIcon}>+</span>
         {creating ? 'Creating...' : 'Create a Room'}
       </button>
+
+      <Link to="/join" className={styles.joinLink}>
+        Join a room from another device
+      </Link>
 
       <div className={styles.features}>
         <div className={styles.feature}>

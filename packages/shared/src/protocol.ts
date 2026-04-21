@@ -6,6 +6,9 @@ export enum WsMessageType {
   PeerLeave = 'peer:leave',
   ContentNew = 'content:new',
   Pong = 'pong',
+  PairingReady = 'pairing:ready',
+  PairingClaimed = 'pairing:claimed',
+  PairingExpired = 'pairing:expired',
 
   // Client → Server
   Ping = 'ping',
@@ -43,6 +46,21 @@ export interface PongMessage extends WsMessageBase {
   type: WsMessageType.Pong;
 }
 
+export interface PairingReadyMessage extends WsMessageBase {
+  type: WsMessageType.PairingReady;
+  code: string;
+  expiresAt: string;
+}
+
+export interface PairingClaimedMessage extends WsMessageBase {
+  type: WsMessageType.PairingClaimed;
+  roomId: string;
+}
+
+export interface PairingExpiredMessage extends WsMessageBase {
+  type: WsMessageType.PairingExpired;
+}
+
 // Client → Server messages
 export interface PingMessage extends WsMessageBase {
   type: WsMessageType.Ping;
@@ -53,6 +71,9 @@ export type WsServerMessage =
   | PeerJoinMessage
   | PeerLeaveMessage
   | ContentNewMessage
-  | PongMessage;
+  | PongMessage
+  | PairingReadyMessage
+  | PairingClaimedMessage
+  | PairingExpiredMessage;
 
 export type WsClientMessage = PingMessage;

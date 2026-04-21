@@ -9,9 +9,17 @@ import {
   getPeersInRoom,
   broadcastToRoom,
 } from './rooms.js';
+import { createPairing, removePairing } from './pairing.js';
 
 export function handleWsConnection(ws: WebSocket, req: IncomingMessage): void {
   const url = new URL(req.url || '', `http://${req.headers.host}`);
+  const mode = url.searchParams.get('mode');
+
+  if (mode === 'pair') {
+    handlePairingWs(ws);
+    return;
+  }
+
   const roomId = url.searchParams.get('roomId');
 
   if (!roomId) {
@@ -82,6 +90,36 @@ function handleMessage(msg: any, ws: WebSocket): void {
       ws.send(JSON.stringify({ type: WsMessageType.Pong }));
       break;
   }
+}
+
+function handlePairingWs(ws: WebSocket): void {
+  const { code, expiresAt } = createPairing(ws);
+
+  ws.send(JSON.stringify({
+    type: WsMessageType.PairingReady,
+    code,
+    expiresAt,
+  }));
+
+  ws.on('close', () => {
+    removePairing(code);
+  });
+
+  ws.on('message', (data) => {
+    try {
+      const msg = JSON.parse(data.toString());
+      if (msg.type === WsMessageType.Ping) {
+        ws.send(JSON.stringify({ type: WsMessageType.Pong }));
+      }
+    } catch {
+      // Ignore malformed messages
+    }
+  });
+
+  ws.on('pong', () => {
+    (ws as any).__alive = true;
+  });
+  (ws as any).__alive = true;
 }
 
 // Heartbeat interval

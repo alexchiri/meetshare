@@ -7,6 +7,7 @@ import { errorHandler } from './middleware/errors.js';
 import healthRouter from './routes/health.js';
 import roomsRouter from './routes/rooms.js';
 import contentRouter from './routes/content.js';
+import pairingRouter from './routes/pairing.js';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(generalLimiter);
 app.use(healthRouter);
 app.use(roomsRouter);
 app.use(contentRouter);
+app.use(pairingRouter);
 
 // Serve client static files in production
 if (isProduction) {

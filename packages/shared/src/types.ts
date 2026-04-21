@@ -44,3 +44,8 @@ export interface CreateTextContentRequest {
   type: 'text' | 'link';
   textContent: string;
 }
+
+export interface ClaimPairingRequest {
+  code: string;
+  roomId: string;
+}

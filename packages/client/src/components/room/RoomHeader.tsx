@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import type { RoomResponse } from '@share-it/shared';
 import { usePeerStore } from '../../stores/peerStore';
 import { showToast } from '../common/Toaster';
+import AddDeviceModal from './AddDeviceModal';
 import styles from './RoomHeader.module.css';
 
 interface Props {
@@ -11,6 +13,7 @@ interface Props {
 
 export default function RoomHeader({ room, showQR, onToggleQR }: Props) {
   const peers = usePeerStore((s) => s.peers);
+  const [addDeviceOpen, setAddDeviceOpen] = useState(false);
   const roomUrl = `${window.location.origin}/room/${room.id}`;
 
   function copyLink() {
@@ -49,6 +52,13 @@ export default function RoomHeader({ room, showQR, onToggleQR }: Props) {
           Copy Link
         </button>
         <button
+          className={styles.btn}
+          onClick={() => setAddDeviceOpen(true)}
+          title="Add a device by pairing code"
+        >
+          Add Device
+        </button>
+        <button
           className={showQR ? styles.btn : styles.btnPrimary}
           onClick={onToggleQR}
           title={showQR ? 'Hide QR code' : 'Show QR code'}
@@ -56,6 +66,12 @@ export default function RoomHeader({ room, showQR, onToggleQR }: Props) {
           {showQR ? 'Hide QR' : 'QR Code'}
         </button>
       </div>
+      {addDeviceOpen && (
+        <AddDeviceModal
+          roomId={room.id}
+          onClose={() => setAddDeviceOpen(false)}
+        />
+      )}
     </div>
   );
 }

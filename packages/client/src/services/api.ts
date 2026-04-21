@@ -99,3 +99,15 @@ export async function uploadFile(
 export function getFileUrl(roomId: string, contentId: string): string {
   return `${BASE}/rooms/${roomId}/content/${contentId}/file`;
 }
+
+export async function claimPairing(code: string, roomId: string): Promise<void> {
+  const res = await fetch(`${BASE}/pairing/claim`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code, roomId }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(res.status, body.error || res.statusText, body);
+  }
+}
