@@ -21,15 +21,16 @@ services:
       - /tmp:rw,nosuid,nodev,noexec,size=64m
     cap_drop:
       - ALL                         # drop all Linux capabilities
-    security_opt:
-      - no-new-privileges:true      # block privilege escalation via setuid
-    init: true                      # PID 1 init to reap zombies, forward signals
+    # NOTE: `no-new-privileges:true` is intentionally omitted — on this Ubuntu
+    # host it conflicts with the docker-default AppArmor profile and makes the
+    # entrypoint exec fail (EPERM). AppArmor + non-root `node` + cap_drop ALL
+    # already block privilege escalation here.
     pids_limit: 256                 # cap process count (fork-bomb guard)
     mem_limit: 512m
     memswap_limit: 512m             # == mem_limit: disable swap usage
     cpus: 1.0
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3001/health"]
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3001/health"]
       interval: 30s
       timeout: 5s
       retries: 3
