@@ -2,10 +2,10 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-dotenv.config({ path: path.resolve(fileURLToPath(import.meta.url), '../../../../.env') });
+dotenv.config({ path: path.resolve(fileURLToPath(import.meta.url), '../../../../.env'), quiet: true });
 
 // Also try local .env
-dotenv.config();
+dotenv.config({ quiet: true });
 
 export const config = {
   port: parseInt(process.env.PORT || '3001', 10),

@@ -15,12 +15,31 @@ services:
     volumes:
       - share-it-data:/data
       - share-it-uploads:/uploads
+    # --- Hardening ---
+    read_only: true                 # immutable root filesystem
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=64m
+    cap_drop:
+      - ALL                         # drop all Linux capabilities
+    security_opt:
+      - no-new-privileges:true      # block privilege escalation via setuid
+    init: true                      # PID 1 init to reap zombies, forward signals
+    pids_limit: 256                 # cap process count (fork-bomb guard)
+    mem_limit: 512m
+    memswap_limit: 512m             # == mem_limit: disable swap usage
+    cpus: 1.0
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3001/api/health"]
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3001/health"]
       interval: 30s
       timeout: 5s
       retries: 3
+      start_period: 10s
     restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   share-it-data:

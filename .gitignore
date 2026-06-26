@@ -8,3 +8,5 @@ data/
 .DS_Store
 *.tgz
 *.tsbuildinfo
+packages/client/vite.config.js
+packages/client/vite.config.d.ts

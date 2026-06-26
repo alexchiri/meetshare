@@ -28,8 +28,11 @@ app.use(pairingRouter);
 if (isProduction) {
   const clientDist = path.resolve(import.meta.dirname, '../../client/dist');
   app.use(express.static(clientDist));
-  app.get('*', (req, res, next) => {
-    if (req.path.startsWith('/api')) return next();
+  // SPA fallback: serve index.html for non-API GET routes.
+  // Express 5 (path-to-regexp v8) no longer accepts a bare '*' path, so use a
+  // catch-all middleware instead of a wildcard route.
+  app.use((req, res, next) => {
+    if (req.method !== 'GET' || req.path.startsWith('/api')) return next();
     res.sendFile(path.join(clientDist, 'index.html'));
   });
 }
